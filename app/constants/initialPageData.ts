@@ -31,21 +31,26 @@ export const INITIAL_PAGE = {
         {
             id: "evento-1",
             title: "Resenha do Zuelando",
-            location: "Nova Cintra, BH",
+            location: "Rua Condor, 535 - Nova Cintra, BH",
             date: "12 Set",
             dateIso: "2026-09-12",
+            startTime: "18:00",
+            endTime: "23:00",
             url: "#",
             galleryUrl: "/galeria/resenha12-09",
         },
         {
             id: "evento-2",
-            title: "Festa de Iemanjá",
-            location: "Praia Grande, SP",
-            date: "02 Fev",
-            dateIso: "2026-02-02",
+            title: "Festival de Cultura Negra",
+            location: "Rio de Janeiro, RJ",
+            date: "05 Dez",
+            dateIso: "2025-12-05",
+            startTime: "16:00",
+            endTime: "21:00",
+            description: "Apresentação especial do grupo Zuelando no festival.",
             url: "#",
-            galleryUrl: "/galeria/iemanja",
-        }
+            galleryUrl: "/galeria/festarj"
+        },
     ],
     links: [
         {
