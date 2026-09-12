@@ -13,8 +13,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Zuelando",
+  title: "ZUELANDO",
   description: "Ancestralidade e muito axé",
+  icons: {
+    icon: "/ico.svg",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
