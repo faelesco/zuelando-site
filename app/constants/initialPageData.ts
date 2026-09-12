@@ -33,7 +33,18 @@ export const INITIAL_PAGE = {
             title: "Resenha do Zuelando",
             location: "Nova Cintra, BH",
             date: "12 Set",
+            dateIso: "2026-09-12",
             url: "#",
+            galleryUrl: "/galeria/resenha12-09",
+        },
+        {
+            id: "evento-2",
+            title: "Festa de Iemanjá",
+            location: "Praia Grande, SP",
+            date: "02 Fev",
+            dateIso: "2026-02-02",
+            url: "#",
+            galleryUrl: "/galeria/iemanja",
         }
     ],
     links: [
