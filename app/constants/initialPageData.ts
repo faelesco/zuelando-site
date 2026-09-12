@@ -13,9 +13,20 @@ export const INITIAL_PAGE = {
         whatsapp: "https://wa.me/5531998892727",
     },
     sections: {
+        explore: "✨ Explore",
         agenda: "📅 Próximos Eventos",
         music: "🎧 Ouça Agora",
     },
+    pages: [
+        {
+            id: "page-pontos",
+            title: "Biblioteca de Pontos",
+            description: "Letras e cantos sagrados",
+            icon: "📜",
+            url: "/musicPage",
+            colorClass: "bg-amber-100 text-amber-700",
+        },
+    ],
     events: [
         {
             id: "evento-1",
@@ -28,7 +39,7 @@ export const INITIAL_PAGE = {
     links: [
         {
             id: "link-1",
-            title: "Spotify: Novo Álbum",
+            title: "Spotify: Novo Música",
             icon: "🎵",
             colorClass: "bg-green-500",
             url: "#",
