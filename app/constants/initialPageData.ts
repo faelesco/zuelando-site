@@ -31,7 +31,7 @@ export const INITIAL_PAGE = {
             title: "Sobre Nós",
             description: "Nossa história e dos Ogãs",
             icon: "🪘",
-            url: "/sobre",
+            url: "/sobrePage",
             colorClass: "bg-green-100 text-green-700",
         }
     ],
