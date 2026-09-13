@@ -26,6 +26,14 @@ export const INITIAL_PAGE = {
             url: "/musicPage",
             colorClass: "bg-amber-100 text-amber-700",
         },
+        {
+            id: "page-sobre",
+            title: "Sobre Nós",
+            description: "Nossa história e dos Ogãs",
+            icon: "🪘",
+            url: "/sobre",
+            colorClass: "bg-green-100 text-green-700",
+        }
     ],
     events: [
         {
@@ -34,6 +42,17 @@ export const INITIAL_PAGE = {
             location: "Rua Condor, 535 - Nova Cintra, BH",
             date: "12 Set",
             dateIso: "2026-09-12",
+            startTime: "18:00",
+            endTime: "23:00",
+            url: "#",
+            galleryUrl: "/galeria/resenha12-09",
+        },
+        {
+            id: "evento-3",
+            title: "Resenha do Zuelando Part2",
+            location: "Rua Condor, 535 - Nova Cintra, BH",
+            date: "20 Set",
+            dateIso: "2026-09-20",
             startTime: "18:00",
             endTime: "23:00",
             url: "#",
