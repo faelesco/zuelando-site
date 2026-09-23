@@ -25,7 +25,7 @@ function PontoCard({
 }: {
     musica: Musica;
     isAdmin: boolean;
-    onRemover: (id: string, audioUrl?: string, e: React.MouseEvent<HTMLButtonElement>) => void;
+    onRemover: (id: string, audioUrl?: string, e?: React.MouseEvent<HTMLButtonElement>) => void;
 }) {
     const [isExpanded, setIsExpanded] = useState(false);
 
