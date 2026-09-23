@@ -1,6 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 interface AdminAuthProps {
     isAdmin: boolean;
@@ -9,22 +14,33 @@ interface AdminAuthProps {
 
 export function AdminAuth({ isAdmin, setIsAdmin }: AdminAuthProps) {
     const [showLogin, setShowLogin] = useState(false);
-    const [user, setUser] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (user === "admin" && password === "zuelando777") {
+        setIsLoading(true);
+
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
+
+        if (error) {
+            alert("E-mail ou senha incorretos!");
+        } else if (data.user) {
             setIsAdmin(true);
             setShowLogin(false);
-            setUser("");
+            setEmail("");
             setPassword("");
-        } else {
-            alert("Usuário ou senha incorretos!");
         }
+
+        setIsLoading(false);
     };
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
         setIsAdmin(false);
     };
 
@@ -59,10 +75,33 @@ export function AdminAuth({ isAdmin, setIsAdmin }: AdminAuthProps) {
                         <button type="button" onClick={() => setShowLogin(false)} className="absolute top-6 right-6 text-neutral-400 hover:text-neutral-800 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                         </button>
-                        <h2 className="text-2xl font-extrabold mb-8 text-center text-neutral-900">Administrador do Zuelando</h2>
-                        <input type="text" placeholder="Usuário" value={user} onChange={(e) => setUser(e.target.value)} className="w-full p-4 mb-4 bg-neutral-50 border border-neutral-200 rounded-xl outline-none focus:border-neutral-400 transition-colors font-medium" />
-                        <input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full p-4 mb-8 bg-neutral-50 border border-neutral-200 rounded-xl outline-none focus:border-neutral-400 transition-colors font-medium" />
-                        <button type="submit" className="w-full bg-neutral-900 hover:bg-neutral-800 text-white font-bold py-4 rounded-xl transition-colors text-lg shadow-md">Entrar</button>
+                        <h2 className="text-2xl font-extrabold mb-8 text-center text-neutral-900">Acesso Restrito</h2>
+
+                        <input
+                            type="email"
+                            placeholder="E-mail de acesso"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full p-4 mb-4 bg-neutral-50 border border-neutral-200 rounded-xl outline-none focus:border-neutral-400 transition-colors font-medium"
+                            required
+                        />
+
+                        <input
+                            type="password"
+                            placeholder="Palavra-passe"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full p-4 mb-8 bg-neutral-50 border border-neutral-200 rounded-xl outline-none focus:border-neutral-400 transition-colors font-medium"
+                            required
+                        />
+
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            className="w-full bg-neutral-900 hover:bg-neutral-800 disabled:bg-neutral-500 text-white font-bold py-4 rounded-xl transition-colors text-lg shadow-md flex justify-center items-center gap-2"
+                        >
+                            {isLoading ? "A verificar seu axé..." : "Entrar no Sistema"}
+                        </button>
                     </form>
                 </div>
             )}
