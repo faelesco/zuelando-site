@@ -6,8 +6,8 @@ import { createClient } from "@supabase/supabase-js";
 import { BackgroundElements } from "../components/BackgroundElements";
 import { AdminAuth } from "../components/AdminAuth";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://aguardando-chaves.supabase.co";
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "chave-publica-temporaria";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 interface Musica {
