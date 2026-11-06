@@ -81,10 +81,10 @@ export const INITIAL_PAGE = {
         },
         {
             id: "link-2",
-            title: "YouTube: Clipe Oficial",
+            title: "YouTube: Vídeos Oficiais",
             icon: "▶️",
             colorClass: "bg-red-600",
-            url: "#",
+            url: "https://www.youtube.com/@Zuelando1",
         },
     ],
 };
