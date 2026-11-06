@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
 import { generateGoogleCalendarUrl, downloadIcsFile } from "../utils/calendar";
+import { FlyerGenerator } from "./FlyerGenerator";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://aguardando-chaves.supabase.co";
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "chave-publica-temporaria";
@@ -167,37 +168,10 @@ export function AgendaSection({ title, isAdmin = false }: AgendaSectionProps) {
                 </form>
             )}
 
-            {/* LISTA DE EVENTOS COM A LÓGICA RESTAURADA (Sem Links Nativos Sobrepostos) */}
             <div className="space-y-3">
                 {eventos.map((evento) => {
                     const isPast = evento.data_iso ? evento.data_iso < todayIso : false;
 
-                    // LAYOUT 1: EVENTOS PASSADOS (Usa <Link>)
-                    if (isPast) {
-                        return (
-                            <div key={evento.id} className="group relative flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-white/90 backdrop-blur-md rounded-2xl shadow-sm hover:shadow-md transition-all border border-gray-100 gap-3 overflow-hidden">
-                                <Link href={evento.link_fotos || "#"} className={`flex flex-col sm:flex-row sm:items-center justify-between flex-grow gap-3 ${evento.link_fotos ? 'cursor-pointer' : 'cursor-default'}`}>
-                                    <div className="flex flex-col">
-                                        <span className="font-bold text-[#111827] text-base">{evento.titulo}</span>
-                                        <span className="text-xs text-gray-500">{evento.local}</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 shrink-0 pr-16 sm:pr-0">
-                                        <div className="bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap flex items-center gap-1 group-hover:bg-gray-200 transition-colors">
-                                            📷 Ver fotos
-                                        </div>
-                                    </div>
-                                </Link>
-                                {isAdmin && (
-                                    <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 bg-white pl-2 shadow-[-10px_0_10px_white]">
-                                        <button onClick={() => handleEditar(evento)} className="p-2 text-neutral-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-colors z-20"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>
-                                        <button onClick={() => handleRemover(evento.id)} className="p-2 text-neutral-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors z-20"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
-                                    </div>
-                                )}
-                            </div>
-                        );
-                    }
-
-                    // LAYOUT 2: EVENTOS FUTUROS (Usa <div> normal com <a> para o Calendário)
                     const googleUrl = (evento.data_iso && evento.hora_inicio && evento.hora_fim)
                         ? generateGoogleCalendarUrl({
                             title: evento.titulo,
@@ -210,34 +184,61 @@ export function AgendaSection({ title, isAdmin = false }: AgendaSectionProps) {
                         : "#";
 
                     return (
-                        <div key={evento.id} className="group relative flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-white/90 backdrop-blur-md rounded-2xl shadow-sm hover:shadow-md transition-all border border-gray-100 gap-3 overflow-hidden">
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between flex-grow gap-3">
-                                <div className="flex flex-col">
-                                    <span className="font-bold text-[#111827] text-base">{evento.titulo}</span>
-                                    <span className="text-xs text-gray-500">{evento.local}</span>
-                                </div>
-                                <div className="flex items-center gap-2 shrink-0 pr-16 sm:pr-0">
-                                    {evento.hora_inicio && evento.hora_fim && evento.data_iso && (
-                                        <a href={googleUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => handleCalendarClick(e, evento)} title="Adicionar à agenda" className="p-2 text-gray-400 hover:text-orange-600 hover:bg-orange-50 rounded-full transition-colors z-10">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
-                                                <line x1="16" x2="16" y1="2" y2="6"></line>
-                                                <line x1="8" x2="8" y1="2" y2="6"></line>
-                                                <line x1="3" x2="21" y1="10" y2="10"></line>
-                                                <path d="M8 14h.01"></path><path d="M12 14h.01"></path><path d="M16 14h.01"></path>
-                                                <path d="M8 18h.01"></path><path d="M12 18h.01"></path>
-                                            </svg>
-                                        </a>
-                                    )}
-                                    <div className="bg-orange-50 text-orange-600 px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap">
-                                        {evento.data_texto}
+                        <div key={evento.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-white/90 backdrop-blur-md rounded-2xl shadow-sm hover:shadow-md transition-all border border-gray-100 gap-4">
+
+                            {isPast ? (
+                                <Link href={evento.link_fotos || "#"} className={`flex flex-col sm:flex-row sm:items-center justify-between flex-grow gap-3 ${evento.link_fotos ? 'cursor-pointer' : 'cursor-default'}`}>
+                                    <div className="flex flex-col">
+                                        <span className="font-bold text-[#111827] text-base">{evento.titulo}</span>
+                                        <span className="text-xs text-gray-500">{evento.local}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 shrink-0">
+                                        <div className="bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap flex items-center gap-1 hover:bg-gray-200 transition-colors">
+                                            📷 Ver fotos
+                                        </div>
+                                    </div>
+                                </Link>
+                            ) : (
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between flex-grow gap-3">
+                                    <div className="flex flex-col">
+                                        <span className="font-bold text-[#111827] text-base">{evento.titulo}</span>
+                                        <span className="text-xs text-gray-500">{evento.local}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 shrink-0">
+                                        <FlyerGenerator
+                                            titulo={evento.titulo}
+                                            dataTexto={evento.data_texto || ""}
+                                            local={evento.local}
+                                        />
+                                        {evento.hora_inicio && evento.hora_fim && evento.data_iso && (
+                                            <a href={googleUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => handleCalendarClick(e, evento)} title="Adicionar à agenda" className="p-2 text-gray-400 hover:text-orange-600 hover:bg-orange-50 rounded-full transition-colors z-10">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                                                    <line x1="16" x2="16" y1="2" y2="6"></line>
+                                                    <line x1="8" x2="8" y1="2" y2="6"></line>
+                                                    <line x1="3" x2="21" y1="10" y2="10"></line>
+                                                    <path d="M8 14h.01"></path><path d="M12 14h.01"></path><path d="M16 14h.01"></path>
+                                                    <path d="M8 18h.01"></path><path d="M12 18h.01"></path>
+                                                </svg>
+                                            </a>
+                                        )}
+                                        <div className="bg-orange-50 text-orange-600 px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap">
+                                            {evento.data_texto}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            )}
+
                             {isAdmin && (
-                                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 bg-white pl-2 shadow-[-10px_0_10px_white]">
-                                    <button onClick={() => handleEditar(evento)} className="p-2 text-neutral-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-colors z-20"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>
-                                    <button onClick={() => handleRemover(evento.id)} className="p-2 text-neutral-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors z-20"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+                                <div className="flex items-center gap-2 pt-3 sm:pt-0 sm:pl-4 border-t sm:border-t-0 sm:border-l border-gray-100 w-full sm:w-auto justify-end shrink-0">
+                                    <button onClick={() => handleEditar(evento)} className="p-2 text-neutral-500 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-colors flex items-center gap-2 text-sm font-semibold" title="Editar">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                        <span className="sm:hidden">Editar</span>
+                                    </button>
+                                    <button onClick={() => handleRemover(evento.id)} className="p-2 text-neutral-500 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-2 text-sm font-semibold" title="Remover">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                        <span className="sm:hidden">Remover</span>
+                                    </button>
                                 </div>
                             )}
                         </div>
