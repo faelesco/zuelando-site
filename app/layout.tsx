@@ -12,11 +12,27 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "ZUELANDO",
-  description: "Ancestralidade e muito axé",
+export const metadata = {
+  title: "Zuelando | Ancestralidade, ritmo e muito axé",
+  description: "Projeto Zuelando: Eventos culturais, biblioteca de pontos sagrados, vivências e locação de espaço para a cultura de matriz africana. Rua Condor, 535 - Nova Cintra.",
+  keywords: "Zuelando, terreiro, eventos de axé, ogãs, atabaque, pontos de umbanda, candomblé, ancestralidade, Nova Cintra",
   icons: {
     icon: "/ico.svg",
+  },
+  openGraph: {
+    title: "Zuelando | Ancestralidade e Ritmo",
+    description: "Conheça a raiz do Zuelando, nossos próximos eventos e a biblioteca de cantos sagrados.",
+    url: "https://www.zuelando.com.br",
+    siteName: "Zuelando",
+    images: [
+      {
+        url: "/zuelando-site.jpg",
+        width: 1200,
+        height: 630,
+      }
+    ],
+    locale: "pt_BR",
+    type: "website",
   },
 };
 
