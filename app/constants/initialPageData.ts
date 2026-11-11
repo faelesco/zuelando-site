@@ -13,9 +13,9 @@ export const INITIAL_PAGE = {
         whatsapp: "https://wa.me/5531998892727",
     },
     sections: {
-        explore: "✨ Explore",
-        agenda: "📅 Próximos Eventos",
-        music: "🎧 Ouça Agora",
+        explore: "Explore",
+        agenda: "Próximos eventos",
+        music: "Ouça agora",
     },
     pages: [
         {

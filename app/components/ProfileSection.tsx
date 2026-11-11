@@ -7,20 +7,25 @@ interface ProfileProps {
 
 export function ProfileSection({ profile, socials }: ProfileProps) {
     return (
-        <section className="w-full lg:w-1/2 flex flex-col items-center justify-start lg:sticky lg:top-24 h-fit pt-4 sm:pt-8">
-            <div className="flex flex-col items-center gap-3 mb-8 w-full">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-stone-900 via-stone-700 to-stone-500 text-center uppercase drop-shadow-sm pb-1">
-                    {profile.name}
-                </h1>
+        <div className="max-w-2xl">
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.25em] text-amber-700">Cultura de matriz africana</p>
+            <h1 className="text-5xl font-extrabold uppercase leading-none tracking-tight text-stone-900 sm:text-6xl lg:text-7xl">
+                {profile.name}
+            </h1>
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-stone-600 sm:text-lg">{profile.description}</p>
 
-                <div className="w-12 h-1 bg-gradient-to-r from-amber-600 to-yellow-500 rounded-full mb-2 opacity-90"></div>
-
-                <p className="text-stone-600 text-center text-base sm:text-lg max-w-md font-medium leading-relaxed px-4">
-                    {profile.description}
-                </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+                <a
+                    href="#agenda"
+                    className="inline-flex items-center rounded-full bg-stone-900 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-stone-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600"
+                >
+                    Ver próximos eventos
+                </a>
             </div>
 
-            <SocialLinks socials={socials} profileName={profile.name} address={profile.address} />
-        </section>
+            <div className="mt-6">
+                <SocialLinks socials={socials} address={profile.address} />
+            </div>
+        </div>
     );
 }

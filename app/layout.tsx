@@ -12,7 +12,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
+export const metadata: Metadata = {
+  metadataBase: new URL("https://www.zuelando.com.br"),
   title: "Zuelando | Ancestralidade, ritmo e muito axé",
   description: "Projeto Zuelando: Eventos culturais, biblioteca de pontos sagrados, vivências e locação de espaço para a cultura de matriz africana. Rua Condor, 535 - Nova Cintra.",
   keywords: "Zuelando, terreiro, eventos de axé, ogãs, atabaque, pontos de umbanda, candomblé, ancestralidade, Nova Cintra",
@@ -42,7 +43,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="pt-BR"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#F5F5F0] text-[#1c1917]">
+      <body className="min-h-full flex flex-col bg-stone-50 text-stone-900">
         {children}
       </body>
     </html>
