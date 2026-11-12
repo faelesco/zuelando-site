@@ -5,7 +5,7 @@ import { MusicSection } from "./components/MusicSection";
 import { NavigationSection } from "./components/NavigationSection";
 import { EventosSection } from "./components/EventosSection";
 import { Footer } from "./components/Footer";
-import { AdminButton } from "./components/AdminButton";
+import { AdminButton } from "./components/admin/AdminButton";
 import { ProximoEventoModal } from "./components/ProximoEventoModal";
 import { getEventos, hojeIso, proximoEvento } from "./lib/eventos";
 
